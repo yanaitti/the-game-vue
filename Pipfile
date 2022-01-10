@@ -8,6 +8,7 @@ flask = "*"
 flask-restful = "*"
 gunicorn = "*"
 flask-caching = "*"
+redis = "*"
 
 [dev-packages]
 
