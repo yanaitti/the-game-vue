@@ -79,7 +79,7 @@
         <li v-for="(hightolow, key) in game.hightolow" :key="key">
           <ul v-on:click='setArea(key)'>
             <li v-for="(card, key) in hightolow" :key="key" class='list'>
-              {{ card }} =>
+              {{ card }}>
             </li>
           </ul>
           <br/>
@@ -90,7 +90,7 @@
         <li v-for="(lowtohigh, key) in game.lowtohigh" :key="key">
           <ul v-on:click='setArea(key+2)'>
             <li v-for="(card, key) in lowtohigh" :key="key" class='list'>
-              {{ card }} =>
+              {{ card }}>
             </li>
           </ul>
           <br/>
