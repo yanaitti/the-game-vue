@@ -40,44 +40,59 @@
         </div>
       </div>
       <div v-else-if="game.status == 'started'">
-        {{ game.stocks.length }}<br/>
+        Your ID: {{ client_id }}<br/>
+        Your Name: {{ nick_name }}<br/>
+        Last cards: {{ game.stocks.length }}<br/>
+        <br/>
         Your Turn: {{ (turn? 'Your turn':'Not your turn') }}
         <br/>
         Your Cards:<br/>
         <ul>
           <li v-for="(value, key) in client.holdcards" :key="key">
-            <v-btn v-on:click='putCard(value)'>
-              {{ value }}
-            </v-btn>
+            <template v-if='turn'>
+              <v-btn v-on:click='putCard(value)' class='list'>
+                {{ value }}
+              </v-btn>
+            </template>
+            <template v-else>
+              <v-btn class='list'>
+                {{ value }}
+              </v-btn>
+            </template>
           </li>
         </ul>
         <br/>
-        <v-btn v-on:click="nextPlayer">次の人へ(Go on Next user)</v-btn><br/>
+        <br/>
+        <template v-if="turn">
+          <v-btn v-on:click="nextPlayer">次の人へ(Go on Next user)</v-btn><br/>
+        </template>
       </div>
       <hr/>
+      <br/>
       <h2>Member Applying</h2>
       <span v-for="(player, key) in game.players" :key="key">
         {{ player.nickname }}({{ player.playerid }})&nbsp;
       </span>
+      <br/>
       <h2>Game Cards</h2>
       <ul>
         <li v-for="(hightolow, key) in game.hightolow" :key="key">
-          <ul>
-            <input type='radio' name='area' v-on:click='setArea(key)'/>{{ key }}
-            <li v-for="(card, key) in hightolow" :key="key">
-              {{ card }}
+          <ul v-on:click='setArea(key)'>
+            <li v-for="(card, key) in hightolow" :key="key" class='list'>
+              {{ card }} =>
             </li>
           </ul>
+          <br/>
         </li>
       </ul>
       <ul>
         <li v-for="(lowtohigh, key) in game.lowtohigh" :key="key">
-          <ul>
-            <input type='radio' name='area' v-on:click='setArea(key+2)'/>{{ key+2 }}
-            <li v-for="(card, key) in lowtohigh" :key="key">
-              {{ card }}
+          <ul v-on:click='setArea(key+2)'>
+            <li v-for="(card, key) in lowtohigh" :key="key" class='list'>
+              {{ card }} =>
             </li>
           </ul>
+          <br/>
         </li>
       </ul>
     </div>
@@ -140,7 +155,7 @@ export default {
       // axios.get('http://localhost:5000/'+this.game_id+'/join/'+this.cName_inp).then((res) => {
       axios.get(this.game_id+'/join/'+this.cName_inp).then((res) => {
         console.log(res.data);
-        this.client_id = res.data.split(',')[0];
+        this.client_id = res.data.split(',')[0].trim();
         this.guest = true;
         setInterval(() => {
           this.status_check();
@@ -181,7 +196,8 @@ export default {
 
         this.client = res.data.players.find((v) => v.playerid.trim() == this.client_id.trim());
         this.nick_name = this.client.nickname;
-        this.turn = (this.client.playerid == this.client_id? true: false);
+        this.turn = (this.game.routelist[this.game.routeidx].playerid == this.client_id? true: false);
+        // console.log(this.game.routeidx+'/'+this.game.routelist[this.game.routeidx].playerid+'/'+this.client_id);
       })
     },
   },
