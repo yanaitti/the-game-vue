@@ -129,7 +129,7 @@ export default {
         this.client_id = this.game_id;
         this.guest = false;
         // this.uriWgId = 'http://localhost:5000/?game_id='+this.game_id;
-        this.uriWgId = 'https://https://the-game-vue.herokuapp.com/?game_id='+this.game_id;
+        this.uriWgId = 'https://the-game-vue.herokuapp.com/?game_id='+this.game_id;
         console.log(res.data);
         setInterval(() => {
           this.status_check();
