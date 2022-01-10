@@ -123,12 +123,13 @@ export default {
       })
     },
     createGame: function() {
-      axios.get('http://localhost:5000/create/'+this.cName_inp).then((res) => {
-      // axios.get('/create/'+this.cName_inp).then((res) => {
+      // axios.get('http://localhost:5000/create/'+this.cName_inp).then((res) => {
+      axios.get('/create/'+this.cName_inp).then((res) => {
         this.game_id = res.data;
         this.client_id = this.game_id;
         this.guest = false;
-        this.uriWgId = 'http://localhost:5000/?game_id='+this.game_id;
+        // this.uriWgId = 'http://localhost:5000/?game_id='+this.game_id;
+        this.uriWgId = 'https://https://the-game-vue.herokuapp.com/?game_id='+this.game_id;
         console.log(res.data);
         setInterval(() => {
           this.status_check();
@@ -136,8 +137,8 @@ export default {
       })
     },
     joinGame: function() {
-      axios.get('http://localhost:5000/'+this.game_id+'/join/'+this.cName_inp).then((res) => {
-      // axios.get(this.game_id+'/join/'+this.cName_inp).then((res) => {
+      // axios.get('http://localhost:5000/'+this.game_id+'/join/'+this.cName_inp).then((res) => {
+      axios.get(this.game_id+'/join/'+this.cName_inp).then((res) => {
         console.log(res.data);
         this.client_id = res.data.split(',')[0];
         this.guest = true;
@@ -148,19 +149,21 @@ export default {
     },
     startGame: function() {
       // console.log('--'+this.rule_type);
-      axios.get('http://localhost:5000/'+this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
-      // axios.get(this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
+      // axios.get('http://localhost:5000/'+this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
+      axios.get(this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
         this.game = res.data;
         // console.log(this.game);
       })
     },
     nextPlayer: function() {
-      axios.get('http://localhost:5000/'+this.game_id+'/next');
+      // axios.get('http://localhost:5000/'+this.game_id+'/next');
+      axios.get(this.game_id+'/next');
       this.error_message = '';
     },
     putCard: function(value) {
       // alert(value);
-      axios.get('http://localhost:5000/'+this.game_id+'/'+this.client_id+'/set/'+this.sel_area+'/'+value)
+      // axios.get('http://localhost:5000/'+this.game_id+'/'+this.client_id+'/set/'+this.sel_area+'/'+value)
+      axios.get(this.game_id+'/'+this.client_id+'/set/'+this.sel_area+'/'+value)
       .then(res => {
         this.error_message = res.data;
       })
@@ -171,8 +174,8 @@ export default {
     },
     status_check: function() {
       // console.log(this.gameid);
-      axios.get('http://localhost:5000/'+this.game_id+'/status').then((res) => {
-      // axios.get(this.game_id+'/status').then((res) => {
+      // axios.get('http://localhost:5000/'+this.game_id+'/status').then((res) => {
+      axios.get(this.game_id+'/status').then((res) => {
         this.game = res.data;
         // console.log(this.game);
 
