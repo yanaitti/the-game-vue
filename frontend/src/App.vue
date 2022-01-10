@@ -66,7 +66,8 @@ export default {
   // },
   methods: {
     createGame: function() {
-      axios.get('http://localhost:5000/create/'+this.cName_inp).then((res) => {
+      // axios.get('http://localhost:5000/create/'+this.cName_inp).then((res) => {
+      axios.get('/create/'+this.cName_inp).then((res) => {
         this.game_id = res.data;
         this.client_id = this.game_id;
         this.guest = false;
@@ -77,7 +78,8 @@ export default {
       })
     },
     joinGame: function() {
-      axios.get('http://localhost:5000/'+this.game_id+'/join/'+this.cName_inp).then((res) => {
+      // axios.get('http://localhost:5000/'+this.game_id+'/join/'+this.cName_inp).then((res) => {
+      axios.get(this.game_id+'/join/'+this.cName_inp).then((res) => {
         console.log(res.data);
         this.client_id = res.data.split(',')[0];
         this.guest = true;
@@ -88,7 +90,8 @@ export default {
     },
     startGame: function() {
       // console.log('--'+this.rule_type);
-      axios.get('http://localhost:5000/'+this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
+      // axios.get('http://localhost:5000/'+this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
+      axios.get(this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
         this.game = res.data;
         // console.log(this.game);
       })
@@ -100,7 +103,8 @@ export default {
     },
     status_check: function() {
       // console.log(this.gameid);
-      axios.get('http://localhost:5000/'+this.game_id+'/status').then((res) => {
+      // axios.get('http://localhost:5000/'+this.game_id+'/status').then((res) => {
+      axios.get(this.game_id+'/status').then((res) => {
         this.game = res.data;
         // console.log(this.game);
 
