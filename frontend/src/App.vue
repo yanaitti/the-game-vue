@@ -82,7 +82,7 @@
               {{ card }} =>
             </li>
           </ul>
-          <br/>
+          <hr>
         </li>
       </ul>
       <ul>
@@ -92,7 +92,7 @@
               {{ card }} =>
             </li>
           </ul>
-          <br/>
+          <hr>
         </li>
       </ul>
     </div>
