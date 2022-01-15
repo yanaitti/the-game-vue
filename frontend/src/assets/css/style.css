@@ -2,6 +2,16 @@ ul {
   list-style:none;
 }
 
-.list {
+.card {
   float:left;
+  background-color: #440000;
+  border: solid 2px #000000;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 3px;
+  width: 50px;
+  height: 60px;
+  text-align: center;
+  vertical-align: middle;
 }

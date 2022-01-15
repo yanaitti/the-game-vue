@@ -47,20 +47,22 @@
         Your Turn: {{ (turn? 'Your turn':'Not your turn') }}
         <br/>
         Your Cards:<br/>
-        <ul>
-          <li v-for="(value, key) in client.holdcards" :key="key">
-            <template v-if='turn'>
-              <v-btn v-on:click='putCard(value)' class='list'>
-                {{ value }}
-              </v-btn>
-            </template>
-            <template v-else>
-              <v-btn class='list'>
-                {{ value }}
-              </v-btn>
-            </template>
-          </li>
-        </ul>
+        <table>
+          <tr>
+            <td v-for="(value, key) in client.holdcards" :key="key">
+              <template v-if='turn'>
+                <div v-on:click='putCard(value)' class='card'>
+                  {{ value }}
+                </div>
+              </template>
+              <template v-else>
+                <div class='card'>
+                  {{ value }}
+                </div>
+              </template>
+            </td>
+          </tr>
+        </table>
         <br/>
         <br/>
         <template v-if="turn">
@@ -75,28 +77,24 @@
       </span>
       <br/>
       <h2>Game Cards</h2>
-      <ul>
-        <li v-for="(hightolow, key) in game.hightolow" :key="key">
-          <ul v-on:click='setArea(key)'>
-            <li v-for="(card, key) in hightolow" :key="key" class='list'>
-              {{ card }}>
-            </li>
-          </ul>
-          <br/>
-          <br/>
-        </li>
-      </ul>
-      <ul>
-        <li v-for="(lowtohigh, key) in game.lowtohigh" :key="key">
-          <ul v-on:click='setArea(key+2)'>
-            <li v-for="(card, key) in lowtohigh" :key="key" class='list'>
-              {{ card }}>
-            </li>
-          </ul>
-          <br/>
-          <br/>
-        </li>
-      </ul>
+      <table>
+        <tr v-for="(hightolow, key) in game.hightolow" :key="key">
+          <td v-on:click='setArea(key)'>
+            <div v-for="(card, key) in hightolow" :key="key" class='card'>
+              {{ card }}
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table>
+        <tr v-for="(lowtohigh, key) in game.lowtohigh" :key="key">
+          <td v-on:click='setArea(key+2)'>
+            <span v-for="(card, key) in lowtohigh" :key="key" class='card'>
+              {{ card }}
+            </span>
+          </td>
+        </tr>
+      </table>
     </div>
     {{ error_message }}
     </v-flex>
@@ -125,9 +123,6 @@ export default {
     this.game_id = this.$route.query.game_id;
     this.guest = (this.$route.query.game_id != ''? true : false);
   },
-  // created: function() {
-  //   this.game_id = this.$route.params.gameid != undefined ? this.$route.params.gameid : false;
-  // },
   methods: {
     clickCopy: function() {
       navigator.clipboard.writeText(this.uriWgId)
@@ -198,7 +193,9 @@ export default {
 
         this.client = res.data.players.find((v) => v.playerid.trim() == this.client_id.trim());
         this.nick_name = this.client.nickname;
-        this.turn = (this.game.routelist[this.game.routeidx].playerid == this.client_id? true: false);
+        if(this.game.status == 'started'){
+          this.turn = (this.game.routelist[this.game.routeidx].playerid == this.client_id? true: false);
+        }
         // console.log(this.game.routeidx+'/'+this.game.routelist[this.game.routeidx].playerid+'/'+this.client_id);
       })
     },
