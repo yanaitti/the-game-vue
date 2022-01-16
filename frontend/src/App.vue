@@ -51,14 +51,14 @@
           <tr>
             <td v-for="(value, key) in client.holdcards" :key="key">
               <template v-if='turn'>
-                <div v-on:click='putCard(value)' class='card'>
+                <span v-on:click='putCard(value)' class='card'>
                   {{ value }}
-                </div>
+                </span>&nbsp;
               </template>
               <template v-else>
-                <div class='card'>
+                <span class='card'>
                   {{ value }}
-                </div>
+                </span>&nbsp;
               </template>
             </td>
           </tr>
@@ -77,21 +77,40 @@
       </span>
       <br/>
       <h2>Game Cards</h2>
-      <table>
-        <tr v-for="(hightolow, key) in game.hightolow" :key="key">
-          <td v-on:click='setArea(key)'>
-            <div v-for="(card, key) in hightolow" :key="key" class='card'>
-              {{ card }}
-            </div>
+      下から配置したい場所をエリアを選択してください<br/>
+      <table class='board'>
+        <tr v-for="(hightolow, key) in game.hightolow" :key="key" class='board'>
+          <td v-on:click='setArea(key)' class='board'>
+            <template v-if="key === sel_area">
+              ★
+            </template>
+            <table>
+              <tr>
+                <td v-for="(card, key) in hightolow" :key="key">
+                  <span class='card'>
+                    {{ card }}
+                  </span>&nbsp;
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
       </table>
       <table>
-        <tr v-for="(lowtohigh, key) in game.lowtohigh" :key="key">
-          <td v-on:click='setArea(key+2)'>
-            <span v-for="(card, key) in lowtohigh" :key="key" class='card'>
-              {{ card }}
-            </span>
+        <tr v-for="(lowtohigh, key) in game.lowtohigh" :key="key" class='board' >
+          <td v-on:click='setArea(key+2)' class='board'>
+            <template v-if="key+2 === sel_area">
+              ★
+            </template>
+            <table>
+              <tr>
+                <td v-for="(card, key) in lowtohigh" :key="key">
+                  <span class='card'>
+                    {{ card }}
+                  </span>&nbsp;
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
       </table>
@@ -169,6 +188,10 @@ export default {
       this.error_message = '';
     },
     putCard: function(value) {
+      if(this.sel_area === ''){
+        alert('下から配置したいエリアを選択してください');
+        return;
+      }
       axios.get(process.env.VUE_APP_API_BASE_URL+this.game_id+'/'+this.client_id+'/set/'+this.sel_area+'/'+value)
       .then(res => {
         this.error_message = res.data;
