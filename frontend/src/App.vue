@@ -50,7 +50,19 @@
         <table>
           <tr>
             <td v-for="(value, key) in client.holdcards" :key="key">
-              <template v-if='turn'>
+              <ul>
+                <template v-if='turn'>
+                  <li v-on:click='putCard(value)' class='card'>
+                    {{ value }}
+                  </li>&nbsp;
+                </template>
+                <template v-else>
+                  <li class='card'>
+                    {{ value }}
+                  </li>&nbsp;
+                </template>
+              </ul>
+              <!-- <template v-if='turn'>
                 <span v-on:click='putCard(value)' class='card'>
                   {{ value }}
                 </span>&nbsp;
@@ -59,7 +71,7 @@
                 <span class='card'>
                   {{ value }}
                 </span>&nbsp;
-              </template>
+              </template> -->
             </td>
           </tr>
         </table>
@@ -84,15 +96,13 @@
             <template v-if="key === sel_area">
               ★
             </template>
-            <table>
-              <tr>
-                <td v-for="(card, key) in hightolow" :key="key">
-                  <span class='card'>
-                    {{ card }}
-                  </span>&nbsp;
-                </td>
-              </tr>
-            </table>
+            <ul>
+              <li v-for="(card, key) in hightolow" :key="key">
+                <span class='card'>
+                  {{ card }}
+                </span>&nbsp;
+              </li>
+            </ul>
           </td>
         </tr>
       </table>
@@ -102,15 +112,13 @@
             <template v-if="key+2 === sel_area">
               ★
             </template>
-            <table>
-              <tr>
-                <td v-for="(card, key) in lowtohigh" :key="key">
-                  <span class='card'>
-                    {{ card }}
-                  </span>&nbsp;
-                </td>
-              </tr>
-            </table>
+            <ul>
+              <li v-for="(card, key) in lowtohigh" :key="key">
+                <span class='card'>
+                  {{ card }}
+                </span>&nbsp;
+              </li>
+            </ul>
           </td>
         </tr>
       </table>

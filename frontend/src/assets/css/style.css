@@ -1,5 +1,16 @@
+table {
+  table-layout: fixed;
+  display: block;
+  width: 100%;
+  overflow: auto;
+}
+
 ul {
   list-style:none;
+  display: table;
+}
+li {
+  display: table-cell;
 }
 
 .card {
