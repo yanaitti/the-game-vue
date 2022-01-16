@@ -122,6 +122,7 @@ export default {
   mounted() {
     this.game_id = this.$route.query.game_id;
     this.guest = (this.$route.query.game_id != ''? true : false);
+    console.log(process.env.NODE_ENV);
   },
   methods: {
     clickCopy: function() {
@@ -135,13 +136,12 @@ export default {
       })
     },
     createGame: function() {
-      // axios.get('http://localhost:5000/create/'+this.cName_inp).then((res) => {
-      axios.get('/create/'+this.cName_inp).then((res) => {
+      axios.get(process.env.VUE_APP_API_BASE_URL+'create/'+this.cName_inp).then((res) => {
         this.game_id = res.data;
         this.client_id = this.game_id;
         this.guest = false;
         // this.uriWgId = 'http://localhost:5000/?game_id='+this.game_id;
-        this.uriWgId = 'https://the-game-vue.herokuapp.com/?game_id='+this.game_id;
+        this.uriWgId = window.location.href+'?game_id='+this.game_id;
         console.log(res.data);
         setInterval(() => {
           this.status_check();
@@ -149,8 +149,7 @@ export default {
       })
     },
     joinGame: function() {
-      // axios.get('http://localhost:5000/'+this.game_id+'/join/'+this.cName_inp).then((res) => {
-      axios.get(this.game_id+'/join/'+this.cName_inp).then((res) => {
+      axios.get(process.env.VUE_APP_API_BASE_URL+this.game_id+'/join/'+this.cName_inp).then((res) => {
         console.log(res.data);
         this.client_id = res.data.split(',')[0].trim();
         this.guest = true;
@@ -160,34 +159,26 @@ export default {
       })
     },
     startGame: function() {
-      // console.log('--'+this.rule_type);
-      // axios.get('http://localhost:5000/'+this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
-      axios.get(this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
+      axios.get(process.env.VUE_APP_API_BASE_URL+this.game_id+'/start'+(this.rule_type?'/original':'')).then((res) => {
         this.game = res.data;
         // console.log(this.game);
       })
     },
     nextPlayer: function() {
-      // axios.get('http://localhost:5000/'+this.game_id+'/next');
-      axios.get(this.game_id+'/next');
+      axios.get(process.env.VUE_APP_API_BASE_URL+this.game_id+'/next');
       this.error_message = '';
     },
     putCard: function(value) {
-      // alert(value);
-      // axios.get('http://localhost:5000/'+this.game_id+'/'+this.client_id+'/set/'+this.sel_area+'/'+value)
-      axios.get(this.game_id+'/'+this.client_id+'/set/'+this.sel_area+'/'+value)
+      axios.get(process.env.VUE_APP_API_BASE_URL+this.game_id+'/'+this.client_id+'/set/'+this.sel_area+'/'+value)
       .then(res => {
         this.error_message = res.data;
       })
     },
     setArea: function(value) {
-      // alert(value);
       this.sel_area = value;
     },
     status_check: function() {
-      // console.log(this.gameid);
-      // axios.get('http://localhost:5000/'+this.game_id+'/status').then((res) => {
-      axios.get(this.game_id+'/status').then((res) => {
+      axios.get(process.env.VUE_APP_API_BASE_URL+this.game_id+'/status').then((res) => {
         this.game = res.data;
         // console.log(this.game);
 
@@ -196,7 +187,6 @@ export default {
         if(this.game.status == 'started'){
           this.turn = (this.game.routelist[this.game.routeidx].playerid == this.client_id? true: false);
         }
-        // console.log(this.game.routeidx+'/'+this.game.routelist[this.game.routeidx].playerid+'/'+this.client_id);
       })
     },
   },
