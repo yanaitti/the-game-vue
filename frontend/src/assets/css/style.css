@@ -11,6 +11,8 @@ ul {
 }
 li {
   display: table-cell;
+  font-family: 'Risque', cursive;
+  font-size: 16pt;
 }
 
 .card {
